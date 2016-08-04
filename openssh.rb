@@ -15,6 +15,7 @@ class Openssh < Formula
   # Please don't resubmit the keychain patch option. It will never be accepted.
   # https://github.com/Homebrew/homebrew-dupes/pull/482#issuecomment-118994372
   option "with-libressl", "Build with LibreSSL instead of OpenSSL"
+  option "with-pkcs11-ecdsa-patch", "Build with patch that supports ECDSA keys over PKCS#11 in ssh-agent"
 
   depends_on "openssl" => :recommended
   depends_on "libressl" => :optional
@@ -41,6 +42,13 @@ class Openssh < Formula
     patch do
       url "https://raw.githubusercontent.com/Homebrew/patches/d8b2d8c2/OpenSSH/launchd.patch"
       sha256 "df61404042385f2491dd7389c83c3ae827bf3997b1640252b018f9230eab3db3"
+    end
+  end
+
+  if build.with? "pkcs11-ecdsa-patch"
+    patch do
+      url "https://bugzilla.mindrot.org/attachment.cgi?id=2728"
+      sha256 "222c0a20ce0bd9fc3330ac3c8ccd9ed945172c0bcb7d7a471a7240324c92b104"
     end
   end
 
